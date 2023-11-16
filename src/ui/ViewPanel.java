@@ -67,7 +67,7 @@ public class ViewPanel extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -117,7 +117,7 @@ public class ViewPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(244, 244, 244)
                 .addComponent(titleLabel)
-                .addContainerGap(232, Short.MAX_VALUE))
+                .addContainerGap(233, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(table, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -174,7 +174,7 @@ public class ViewPanel extends javax.swing.JPanel {
         try{
             newUser.setAge(Integer.parseInt(ageTextField.getText()));
             newUser.setName(nameTextField.getText());
-            DatabaseConnector.edituser(selectedUser, newUser);
+            DatabaseConnector.editUser(selectedUser, newUser);
             JOptionPane.showMessageDialog(null, "User Edited Successfully", "Edit", HEIGHT);
             clearField();
             populateTable();

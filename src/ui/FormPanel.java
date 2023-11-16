@@ -4,17 +4,11 @@
  */
 package ui;
 
-import java.awt.CardLayout;
-import static java.awt.Color.black;
-import static java.awt.Color.red;
-import java.awt.HeadlessException;
-import java.awt.Image;
 import static java.awt.image.ImageObserver.HEIGHT;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.User;
+import util.DatabaseConnector;
 
 /**
  *
@@ -25,7 +19,6 @@ public class FormPanel extends javax.swing.JPanel {
     /**
      * Creates new form FormPanel
      */
-    User user = new User();
     private JPanel bottomPanel;
     public FormPanel(JPanel bottomPanel) {
         initComponents();
@@ -121,22 +114,21 @@ public class FormPanel extends javax.swing.JPanel {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
-        
+        User newUser = new User();
+        try{
+            newUser.setName(nameTextField.getText());
+            newUser.setAge(Integer.parseInt(ageTextField.getText()));
+            DatabaseConnector.addUser(newUser);
+            JOptionPane.showMessageDialog(null, "User Created Successfully", "Create User", HEIGHT);
+            cleanup();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,e.getMessage());
+        }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     
     private void nameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameTextFieldKeyPressed
-//        for (char c : firstNameTextField.getText().toCharArray()) {
-//            if (!Character.isLetter(c)) {
-//                firstNameTextField.setForeground(red);
-//            }
-//        }
-//        if (firstNameTextField.getText().length() >= 2 && firstNameTextField.getText().length() <= 50){
-//            firstNameTextField.setForeground(black);
-//        }
-//        else{
-//            firstNameTextField.setForeground(red);
-//        }
+
     }//GEN-LAST:event_nameTextFieldKeyPressed
 
 
@@ -150,50 +142,8 @@ public class FormPanel extends javax.swing.JPanel {
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
     
-    //validation:
-    public boolean isValidName(String name) {
-        if (name == null || name.isEmpty()) {
-            return false;
-        }
-
-        for (char c : name.toCharArray()) {
-            if (!Character.isLetter(c)) {
-                return false;
-            }
-        }
-        return name.length() >= 2 && name.length() <= 50;
-    }
-
-    public boolean isValidEmail(String email) {
-        if (email == null || email.isEmpty()) {
-            return false; 
-        }
-        String[] parts = email.split("@");
-        if (parts.length != 2) {
-            return false;
-        }
-        String localPart = parts[0];
-        String domainPart = parts[1];
-        if (localPart.isEmpty()) {
-            return false; 
-        }
-        if (domainPart.isEmpty()) {
-            return false; 
-        }
-        return true;
-    }
-    public boolean isValidAge(String ageStr) {
-        try {
-            int age = Integer.parseInt(ageStr);
-            return age >= 0;
-        } catch (NumberFormatException e) {
-            return false; 
-        }
-    }
-    public boolean isValidMessage(String message){
-        if (message.isEmpty()) {
-            return true; 
-        } 
-        return false;
+    private void cleanup(){
+        nameTextField.setText("");
+        ageTextField.setText("");
     }
 }
